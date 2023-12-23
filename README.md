@@ -24,7 +24,7 @@ not only in node.js but in browser too.
 ## usage
 
 ```js
-var inherits = require('inherits');
+import { inherits } from "https://code4fukui.github.io/inherits/inherits.js";
 // then use exactly as the standard one
 ```
 

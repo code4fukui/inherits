@@ -1,4 +1,5 @@
 # inherits
+
 このパッケージは、Node.js標準の`util.inherits()`を提供し、ブラウザ向けの実装も含んでいます。
 
 ## 機能
@@ -14,3 +15,5 @@ import { inherits } from "https://code4fukui.github.io/inherits/inherits.js";
 
 ## ライセンス
 ISCライセンス
+
+Copyright (c) 2011-2023 Isaac Z. Schlueter

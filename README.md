@@ -1,4 +1,7 @@
 # inherits
+
+> 日本語のREADMEはこちらです: [README.ja.md](README.ja.md)
+
 Browser-friendly inheritance fully compatible with standard node.js [inherits](https://nodejs.org/api/util.html#utilinheritsconstructor-superconstructor).
 
 ## Usage

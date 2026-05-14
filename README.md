@@ -1,42 +1,54 @@
-Browser-friendly inheritance fully compatible with standard node.js
-[inherits](https://nodejs.org/api/util.html#utilinheritsconstructor-superconstructor).
+# inherits
 
-This package exports standard `inherits` from node.js `util` module in
-node environment, but also provides alternative browser-friendly
-implementation through [browser
-field](https://gist.github.com/defunctzombie/4339901). Alternative
-implementation is a literal copy of standard one located in standalone
-module to avoid requiring of `util`. It also has a shim for old
-browsers with no `Object.create` support.
+> 日本語のREADMEはこちらです: [README.ja.md](README.ja.md)
 
-While keeping you sure you are using standard `inherits`
-implementation in node.js environment, it allows bundlers such as
-[browserify](https://github.com/substack/node-browserify) to not
-include full `util` package to your client code if all you need is
-just `inherits` function. It worth, because browser shim for `util`
-package is large and `inherits` is often the single function you need
-from it.
+Browser-friendly inheritance fully compatible with the standard Node.js [util.inherits](https://nodejs.org/api/util.html#utilinheritsconstructor-superconstructor).
 
-It's recommended to use this package instead of
-`require('util').inherits` for any code that has chances to be used
-not only in node.js but in browser too.
+## Features
 
-## usage
+- Provides the standard Node.js `util.inherits` API in browsers.
+- Includes a shim for `Object.create()` to support older environments.
+- In a Node.js environment, this module simply exports the built-in `util.inherits`.
+- Sets the `constructor.super_` property to the super-constructor for easy access.
+
+## Usage
 
 ```js
 import { inherits } from "https://code4fukui.github.io/inherits/inherits.js";
-// then use exactly as the standard one
+
+// 1. Define the Parent constructor
+function Parent() {
+  this.parentValue = 'parent';
+}
+
+// 2. Define the Child constructor, calling the Parent constructor
+function Child() {
+  // Call the parent constructor in the context of the child instance
+  Parent.call(this);
+  this.childValue = 'child';
+}
+
+// 3. Set up the prototype chain
+inherits(Child, Parent);
+
+// 4. Create an instance and verify the inheritance
+const c = new Child();
+
+console.log(c instanceof Child);  // true
+console.log(c instanceof Parent); // true
+console.log(c.childValue);        // 'child'
+console.log(c.parentValue);       // 'parent'
+console.log(c.constructor.super_ === Parent); // true
 ```
 
-## note on version ~1.0
+## Upgrading from v1.0
 
-Version ~1.0 had completely different motivation and is not compatible
-neither with 2.0 nor with standard node.js `inherits`.
+Version ~1.0 of this library had a different API and is not compatible with v2.0+ or the Node.js standard. If you are upgrading, be aware of these breaking changes:
 
-If you are using version ~1.0 and planning to switch to ~2.0, be
-careful:
+- The superclass is now referenced via `constructor.super_` instead of `constructor.super`.
+- The child's prototype is now completely overwritten (using `Object.create`), replacing any existing properties. The old version preserved existing properties on the child's prototype.
 
-* new version uses `super_` instead of `super` for referencing
-  superclass
-* new version overwrites current prototype while old one preserves any
-  existing fields on it
+## License
+
+ISC License
+Copyright (c) 2011-2023 Isaac Z. Schlueter
